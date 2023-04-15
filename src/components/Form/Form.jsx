@@ -4,6 +4,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {useTelegram} from "../hooks/useTelegram";
 const Form = () => {
+    const projects = {
+        ComberWay: {value: "Delta" },
+        BridgeView: {value: "NV" },
+        Horizons: {value: "BBy" },
+    };
 
     const [project, setProject] = useState('');
     const [hours, setHours] = useState('');
@@ -26,7 +31,23 @@ const Form = () => {
     const [comments2, setComments2] = useState('');
     const [signature, setSignature] = useState('NB');
 
+    const checkboxes = [
+        { label: 'Cleanup', value: cleanup, setValue: setCleanup },
+        { label: 'Growth', value: growth, setValue: setGrowth },
+        { label: 'Mowing', value: mowing, setValue: setMowing },
+        { label: 'Mechanical', value: mechanical, setValue: setMechanical },
+        { label: 'Aerification', value: aerification, setValue: setAerification },
+        { label: 'Blowing', value: blowing, setValue: setBlowing },
+        { label: 'Fertilization', value: fertilization, setValue: setFertilization },
+        { label: 'Liming', value: liming, setValue: setLiming },
+        { label: 'Weed lawns', value: weeding1, setValue: setWeeding1 },
+        { label: 'Weeding', value: weeding2, setValue: setWeeding2 },
+        { label: 'Weed bed areas', value: weeding3, setValue: setWeeding3 },
+        { label: 'Weed shrubs', value: weeding4, setValue: setWeeding4 },
+    ];
+
     const {tg} = useTelegram();
+
     const onSendData = useCallback(() => {
         const data = {
             project, hours, date, location,
@@ -62,17 +83,52 @@ const Form = () => {
         }
     }, [project, date, hours, location, signature])
 
+    useEffect(() => {
+        const comments = [];
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].value) {
+                comments.push(checkboxes[i].label)
+            }
+        }
+        setComments1(comments);
+    }, [setComments1])
+
+    useEffect(() => {
+        // Если выбран проект из списка, то получаем его объект с информацией о локации
+        const selectedProject = projects[project];
+        // Если такой объект существует, то устанавливаем его значение location в качестве значения поля локации
+        if (selectedProject) {
+            setLocation(selectedProject.value);
+        }
+    }, [project, projects, setLocation]);
+
+    const generateComments = (checkbox) => {
+        const { label, value } = checkbox;
+
+        const comments = [...comments1, label]
+        if (value) {
+            setComments1(comments);
+        } else {
+            let index = comments1.indexOf(label);
+            comments1.splice(index, 1);
+            setComments1(comments1);
+        }
+    }
+
     return (
         <div className={'form'}>
             <label>
                 Project:
                 <select value={project} onChange={(e) => setProject(e.target.value)}>
-                    <option value="">Choose a project</option>
-                    <option value="project1">Project 1</option>
-                    <option value="project2">Project 2</option>
-                    <option value="project3">Project 3</option>
+                    <option value="">Select a project</option>
+                    {Object.keys(projects).map((project) => (
+                        <option value={project} key={project}>
+                            {project}
+                        </option>
+                    ))}
                 </select>
             </label>
+
 
             <label>
                 Hours:
@@ -89,65 +145,21 @@ const Form = () => {
                 <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
             </label>
 
-            <label>
-                <input type="checkbox" checked={cleanup} onChange={(e) => setCleanup(e.target.checked)} />
-                Cleanup:
-            </label>
+            {checkboxes.map(({ label, value, setValue }) => (
+                <label key={label}>
+                    <input
+                        type="checkbox"
+                        checked={value}
+                        onChange={(e) => {
+                            setValue(e.target.checked);
+                            generateComments({ label: label, value: e.target.checked });
+                        }}
+                    />
+                    {label}
+                </label>
+            ))}
 
-            <label>
-                <input type="checkbox" checked={growth} onChange={(e) => setGrowth(e.target.checked)} />
-                Growth:
-            </label>
 
-            <label>
-                <input type="checkbox" checked={mowing} onChange={(e) => setMowing(e.target.checked)} />
-                Mowing:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={mechanical} onChange={(e) => setMechanical(e.target.checked)} />
-                Mechanical:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={aerification} onChange={(e) => setAerification(e.target.checked)} />
-                Aerification:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={blowing} onChange={(e) => setBlowing(e.target.checked)} />
-                Blowing:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={fertilization} onChange={(e) => setFertilization(e.target.checked)} />
-                Fertilization:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={liming} onChange={(e) => setLiming(e.target.checked)} />
-                Liming:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={weeding1} onChange={(e) => setWeeding1(e.target.checked)} />
-                Weeding 1:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={weeding2} onChange={(e) => setWeeding2(e.target.checked)} />
-                Weeding 2:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={weeding3} onChange={(e) => setWeeding3(e.target.checked)} />
-                Weeding 3:
-            </label>
-
-            <label>
-                <input type="checkbox" checked={weeding4} onChange={(e) => setWeeding4(e.target.checked)} />
-                Weeding 4:
-            </label>
 
             <label>
                 Extra:
