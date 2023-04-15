@@ -1,0 +1,90 @@
+.form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+}
+
+label {
+    margin-bottom: 10px;
+    width: calc(50% - 10px);
+}
+
+label:not(:nth-last-child(-n+4)):not(:nth-child(-n+4)) {
+    display: inline-flex;
+}
+
+/* Для первых и последних 4 элементов */
+label:nth-last-child(-n+4),
+label:nth-child(-n+4) {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+select,
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #eee;
+    font-size: 16px;
+    color: #555;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: 5px; /* Добавляем отступ между текстом и полями ввода */
+    margin-bottom: 10px; /* Увеличиваем отступ между полями ввода */
+    outline: none; /* Убираем контур выделения */
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 4 5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 5L0 3h4l-2 2zM2 0L0 2h4L2 0z' fill='%23333'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+    position: relative;
+}
+
+input[type="checkbox"]:checked:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #333;
+}
+
+input[type="checkbox"] + span {
+    margin-left: 5px;
+}
+
+input[type="submit"] {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
