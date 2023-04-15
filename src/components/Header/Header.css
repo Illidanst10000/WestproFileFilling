@@ -9,23 +9,3 @@
 .username {
     margin-left: auto;
 }
-
-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: var(--tg-theme-bg-color);
-    color: var(--tg-theme-text-color);
-    font-size: 20px;
-    text-align: center;
-    line-height: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: var(--tg-theme-bg-color-dark);
-}

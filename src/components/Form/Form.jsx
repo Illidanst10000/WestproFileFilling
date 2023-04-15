@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './Form.css'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {useTelegram} from "../hooks/useTelegram";
 const Form = () => {
+
     const [project, setProject] = useState('');
     const [hours, setHours] = useState('');
     const [date, setDate] = useState(new Date());
@@ -26,6 +27,26 @@ const Form = () => {
     const [signature, setSignature] = useState('NB');
 
     const {tg} = useTelegram();
+    const onSendData = useCallback(() => {
+        const data = {
+            project, hours, date, location,
+            cleanup, growth, mowing, mechanical, aerification, blowing, fertilization,
+            liming, weeding1, weeding2, weeding3, weeding4,
+            extra, comments1, comments2, signature
+        }
+        tg.sendData(JSON.stringify(data))
+
+    }, [project, hours, date, location,
+        cleanup, growth, mowing, mechanical, aerification, blowing, fertilization,
+        liming, weeding1, weeding2, weeding3, weeding4,
+        extra, comments1, comments2, signature])
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData)
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData)
+        }
+    }, [onSendData])
 
     useEffect(() => {
         tg.MainButton.setParams({
