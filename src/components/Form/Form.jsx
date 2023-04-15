@@ -121,7 +121,7 @@ const Form = () => {
             <label>
                 Project:
                 <select value={field_project} onChange={(e) => setProject(e.target.value)}>
-                    <option value="">Select a field_project</option>
+                    <option value="">Select a project</option>
                     {Object.keys(field_projects).map((field_project) => (
                         <option value={field_project} key={field_project}>
                             {field_project}
